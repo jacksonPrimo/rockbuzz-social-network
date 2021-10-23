@@ -1,19 +1,25 @@
 # rockbuzz-social-network
 
-## Build Setup
+## sobre o projeto :computer:
+
+#Este projeto tem como foco a replicação da interface básica de uma rede social.
+
+## lista de comandos
 
 ```bash
-# install dependencies
+# instalar as depêndencias do projeto:
 $ yarn install
 
-# serve with hot reload at localhost:3000
+# rodar a aplicação em modo de desenvolvimento, com hot reload no endereço 'localhost:3000':
 $ yarn dev
 
-# build for production and launch server
+# gerar uma dist do projeto:
 $ yarn build
+
+#rodar o projeto em modo de produção através da dist gerada:
 $ yarn start
 
-# generate static project
+# gerar um projeto estatico
 $ yarn generate
 ```
 

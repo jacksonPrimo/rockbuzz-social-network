@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="mx-auto px-4 sm:px-6 lg:px-12">
       <div v-if="!expendSearchBar" class="flex items-center justify-between h-16">
         <div class="flex items-baseline space-x-4">
           <a href="#" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
@@ -33,11 +33,13 @@
             >
               <fa icon="search"/>
             </label>
-            <input 
+            <input
               id="search" 
+              v-model="searchValue"
               class="hidden md:block rounded-r bg-gray-200 appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
               type="text" 
               placeholder="search twitter"
+              @keyup.enter="search"
             >
           </div>
           
@@ -58,11 +60,13 @@
           <label for="search" class="rounded-l bg-gray-200 py-2 px-3 text-gray-400 leading-tight">
             <fa icon="search"/>
           </label>
-          <input 
-            id="search" 
+          <input
+            id="search"
+            v-model="searchValue"
             class="rounded-r bg-gray-200 appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
             type="text" 
             placeholder="search twitter"
+            @keyup.enter="search"
           >
         </div>
         <div class="py-2 px-3 text-gray-400" @click="expendSearchBar = !expendSearchBar">
@@ -75,11 +79,15 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  data(){
-    return {
-      expendSearchBar: false
+  data: () => ({
+    expendSearchBar: false,
+    searchValue: '',
+  }),
+  methods: {
+    search(){
+      this.$router.push({ name: 'search', query: {description: this.searchValue } })
     }
-  },
+  }
 })
 </script>
 <style scoped>

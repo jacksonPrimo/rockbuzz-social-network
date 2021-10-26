@@ -1,14 +1,11 @@
 <template>
-  <div class="bg-gray-100 w-full h-screen">
-    <Header/>
-    <div class="h-full">
-      <span>content</span>
-    </div>
-  </div>
+  <div>redirecting</div>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
-
-export default Vue.extend({})
+export default Vue.extend({
+  mounted(){
+    this.$router.push({ name: 'feed' })
+  }
+})
 </script>

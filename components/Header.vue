@@ -20,7 +20,7 @@
             <fa icon="hashtag"/>
             <span class="hidden md:inline">Discover</span>
           </a>
-          <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+          <a :href="nickName" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
             <fa icon="user"/>
             <span class="hidden md:inline">Me</span>
           </a>
@@ -104,6 +104,12 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    nickName: {
+      type: String,
+      default: ''
+    }
+  },
   data: () => ({
     expandSearchBar: false,
     expandMenu: false,

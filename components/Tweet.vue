@@ -11,7 +11,7 @@
       <div class="w-10/12">
         <div class="flex space-x-1">
           <span class="text-gray-700">{{tweet.user.fullName}}</span>
-          <span class="text-gray-500">{{tweet.user.nickName}}</span>
+          <a :href="tweet.user.nickName" class="text-gray-500">{{tweet.user.nickName}}</a>
         </div>
         <div>
           <p>{{tweet.description}}</p>
@@ -21,13 +21,13 @@
           <button class="bg-transparent border-0 text-gray-500 mr-auto">
             Expand
           </button>
-          <button class="bg-transparent border-0 text-gray-500">
-            <fa icon="share" class="hover:text-blue-500"/> Reply
+          <button class="bg-transparent border-0 text-gray-500" :class="{ 'text-green-500':  clickedButtons.reply}" @click="clickedButtons.reply = true">
+            <fa icon="share" class="hover:text-green-500"/> Reply
           </button>
-          <button class="bg-transparent border-0 text-gray-500">
+          <button class="bg-transparent border-0 text-gray-500" :class="{ 'text-blue-500':  clickedButtons.retweet}" @click="clickedButtons.retweet = true">
             <fa icon="retweet" class="hover:text-blue-500"/> Retweet
           </button>
-          <button class="bg-transparent border-0 text-gray-500">
+          <button class="bg-transparent border-0 text-gray-500" :class="{ 'text-yellow-500':  clickedButtons.favorite}" @click="clickedButtons.favorite = true; favorite()">
             <fa icon="star" class="hover:text-yellow-500"/> Favorite
           </button>
           <button class="bg-transparent border-0 text-gray-500 relative" @click="showMore = !showMore">
@@ -48,6 +48,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import axios from '@/services/axios.service'
 export default Vue.extend({
   props: {
     tweet: {
@@ -66,10 +67,32 @@ export default Vue.extend({
           }
         }
       }
-    }
+    },
+    userAuthId: {
+      type: String,
+      default: null
+    },
   },
   data: () => ({
     showMore: false,
-  })
+    clickedButtons: {
+      retweet: false,
+      reply: false,
+      favorite: false
+    },
+  }),
+  methods: {
+    async favorite(){
+      try {
+        const favorite = {
+          userId: this.userAuthId,
+          tweetId: this.tweet.id 
+        }
+        await axios.post(`/tweets/favorites/`, favorite)
+      } catch(error){
+        console.log(error)
+      }
+    }
+  }
 })
 </script>

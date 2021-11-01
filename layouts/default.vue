@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-screen relative">
-    <Header/>
+    <Header :nick-name="userAuthenticated.nickName"/>
     <div class="min-h-screen px-4 sm:px-6 lg:px-12 bg-gray-200 pt-16">
       <div class="flex flex-col align-center justify-center md:flex-row justify-between py-2">
         <div class="md:fixed left-12 w-12/12 md:w-3/12 rounded-lg">
@@ -95,7 +95,7 @@ export default Vue.extend({
   }),
   mounted(){
     axios.get('/auth/user-authenticated').then(resp => {
-      this.userAuthenticated = resp.data.userAuthenticated
+      this.userAuthenticated = resp.data.user
     })
     axios.get('/trends').then(resp => {
       this.trends = resp.data

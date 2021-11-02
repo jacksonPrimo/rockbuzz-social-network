@@ -20,6 +20,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "axios": "^0.24.0",
     "core-js": "^3.15.1",
+    "miragejs": "^0.1.42",
     "nuxt": "^2.15.7"
   },
   "devDependencies": {
@@ -38,7 +39,6 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.12.1",
     "jest": "^27.0.5",
-    "miragejs": "^0.1.42",
     "postcss": "^8.3.5",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",

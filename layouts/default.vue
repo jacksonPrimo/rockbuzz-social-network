@@ -9,7 +9,7 @@
             <img v-else :src="userAuthenticated.coverImage" alt="cover">
             <div class="flex flex-col items-center">
               <img
-                class="relative bottom-6 rounded-full w-16 h-16" 
+                class="relative bottom-6 rounded-full w-20 h-20 border-4 border-white"
                 :src="userAuthenticated.profileImage ? userAuthenticated.profileImage :'/profile.svg'" 
                 alt="profile"
               >
@@ -53,12 +53,11 @@
                   :src="stf.profileImage ? stf.profileImage : '/profile.svg'"
                   alt="profile"
                 >
-                  <!-- :src="stf.profileImage ? stf.profileImage : 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Circle-icons-profile.svg'" -->
               </div>
               <div class="w-9/12 flex justify-between w-full">
                 <div class="flex flex-col mr-auto">
                   <span class="text-gray-700">{{stf.fullName}}</span>
-                  <span class="text-gray-500">{{stf.nickName}}</span>
+                  <router-link :to="'/profile/' + stf.nickName" class="text-gray-500">{{stf.nickName}}</router-link>
                 </div>
                 <div class="flex items-center justify-end">
                   <button class="bg-gray-200 py-0 px-2 rounded-full">
@@ -96,13 +95,18 @@ export default Vue.extend({
   mounted(){
     axios.get('/auth/user-authenticated').then(resp => {
       this.userAuthenticated = resp.data.user
+      this.getSugestionToFollow(this.userAuthenticated.id)
     })
     axios.get('/trends').then(resp => {
       this.trends = resp.data
     })
-    axios.get('/sugestion-to-follow?results=1').then(resp => {
-      this.sugestionsToFollow = resp.data
-    })
   },
+  methods: {
+    getSugestionToFollow(userId: string){
+      axios.get(`/sugestion-to-follow/${userId}`).then(resp => {
+        this.sugestionsToFollow = resp.data
+      })
+    }
+  }
 })
 </script>

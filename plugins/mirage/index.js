@@ -117,8 +117,10 @@ if (process.env.NODE_ENV === 'development') {
           return user
         }
       )
-      this.get("/sugestion-to-follow", (schema) => {
-          return schema.users.all().models
+      this.get("/sugestion-to-follow/:userAuthId", (schema, request) => {
+          const { userAuthId } = request.params
+          const users = schema.users.all().models
+          return users.filter(user=>user.id !== userAuthId)
         }
       )
       this.get("/tweets", (schema, request) => {

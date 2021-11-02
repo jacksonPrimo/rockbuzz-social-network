@@ -11,7 +11,7 @@
       <div class="w-10/12">
         <div class="flex space-x-1">
           <span class="text-gray-700">{{tweet.user.fullName}}</span>
-          <a :href="tweet.user.nickName" class="text-gray-500">{{tweet.user.nickName}}</a>
+          <router-link :to="'/profile/' + tweet.user.nickName" class="text-gray-500">{{tweet.user.nickName}}</router-link>
         </div>
         <div>
           <p>{{tweet.description}}</p>
@@ -27,7 +27,7 @@
           <button class="bg-transparent border-0 text-gray-500" :class="{ 'text-blue-500':  clickedButtons.retweet}" @click="clickedButtons.retweet = true">
             <fa icon="retweet" class="hover:text-blue-500"/> Retweet
           </button>
-          <button class="bg-transparent border-0 text-gray-500" :class="{ 'text-yellow-500':  clickedButtons.favorite}" @click="clickedButtons.favorite = true; favorite()">
+          <button data-test-id="tweet-button-favorite" class="bg-transparent border-0 text-gray-500" :class="{ 'text-yellow-500':  clickedButtons.favorite}" @click="clickedButtons.favorite = true; favorite()">
             <fa icon="star" class="hover:text-yellow-500"/> Favorite
           </button>
           <button class="bg-transparent border-0 text-gray-500 relative" @click="showMore = !showMore">

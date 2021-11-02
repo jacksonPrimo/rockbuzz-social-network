@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="rounded bg-white mb-2">
+    <div v-if="!userNotFound">
       <div v-if="!user.coverImage" class="bg-gray-400 h-24"></div>
       <img v-else :src="user.coverImage" alt="cover">
       <div class="relative bottom-4">
@@ -22,7 +22,7 @@
         <div :class="{'active': content == 'tweets'}" class="w-3/12 item-menu" @click="content = 'tweets'">
           <span>Tweets</span>
         </div>
-        <div :class="{'active': content == 'favorites'}" class="w-3/12 item-menu" @click="content = 'favorites'; getFavorites()">
+        <div :class="{'active': content == 'favorites'}" class="w-3/12 item-menu" data-test-id="favorite-option" @click="content = 'favorites'; getFavorites()">
           <span>Favoritos</span>
         </div>
         <div :class="{'active': content == 'following'}" class="w-3/12 item-menu" @click="content = 'following'">
@@ -56,7 +56,7 @@
       </div>
       <div v-if="content == 'favorites'">
         <div v-if="favorites.length">
-          <div v-for="(tweet, index) of favorites" :key="index">
+          <div v-for="(tweet, index) of favorites" :key="index" data-test-id="favorite">
             <Tweet :tweet="tweet" :user-auth-id="userAuthId"/>
           </div>
         </div>
@@ -77,7 +77,7 @@
             <div class="w-10/12 flex justify-between w-full">
               <div class="flex flex-col mr-auto">
                 <span class="text-gray-700">{{result.fullName}}</span>
-                <span class="text-gray-500">{{result.nickName}}</span>
+                <router-link :to="'/profile/' + result.nickName" class="text-gray-500">{{result.nickName}}</router-link>
               </div>
               <div class="flex items-center justify-end">
                 <button class="border border-gray-200 py-0 px-2 rounded-full">
@@ -104,7 +104,7 @@
             <div class="w-10/12 flex justify-between w-full">
               <div class="flex flex-col mr-auto">
                 <span class="text-gray-700">{{result.fullName}}</span>
-                <span class="text-gray-500">{{result.nickName}}</span>
+                <router-link :to="'/profile/' + result.nickName" class="text-gray-500">{{result.nickName}}</router-link>
               </div>
               <div class="flex items-center justify-end">
                 <button class="bg-gray-200 py-0 px-2 rounded-full">
@@ -118,6 +118,9 @@
           <h2 class="text-center text-2xl text-gray-500 pt-2 pb-3">this user has no followers yet<fa icon="sad-tear"/></h2>
         </div>        
       </div>
+    </div>
+    <div v-if="userNotFound" class="py-11">
+      <h1 class="text-center text-2xl text-red-200">User Not Found</h1>
     </div>
   </div>
 </template>
@@ -136,6 +139,7 @@ export default Vue.extend({
       following: [],
       followers: []
     },
+    userNotFound: true,
     userAuthId: '',
     content: 'tweets',
     tweets: [],
@@ -149,10 +153,15 @@ export default Vue.extend({
   },
   mounted(){
     const { nickName } = this.$route.params;
-    axios.get(`/profile/${nickName}`).then(resp=>{
+    if(!nickName) this.$router.push('/feed')
+    axios.get(`/profile/${nickName}`)
+      .then(resp=>{
         this.user = resp.data.user
-        console.log(this.user)
-    })
+        this.userNotFound = false
+      })
+      .catch(() => {
+        this.userNotFound = true
+      })
     axios.get('/tweets').then(resp => {
         this.tweets = resp.data
     })

@@ -1,34 +1,34 @@
 <template>
-  <nav class="bg-white fixed w-full z-10">
+  <nav class="bg-white fixed w-full z-10 shadow-lg">
     <div class="mx-auto px-4 sm:px-6 lg:px-12">
       <div v-if="!expandSearchBar" class="flex items-center justify-between h-16">
         <div class="block md:hidden">
-          <a href="/">
+          <router-link to="/feed">
             <img class="h-8 w-8" src="../static/icon.svg" alt="Workflow">
-          </a>
+          </router-link>
         </div>
         <div class="flex items-baseline space-x-4">
-          <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+          <router-link to="/feed" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
             <fa icon="home"/>
             <span class="hidden md:inline">Home</span>
-          </a>
-          <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+          </router-link>
+          <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
             <fa icon="bell"/>
             <span class="hidden md:inline">Notifications</span>
-          </a>
-          <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+          </router-link>
+          <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
             <fa icon="hashtag"/>
             <span class="hidden md:inline">Discover</span>
-          </a>
-          <a :href="nickName" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+          </router-link>
+          <router-link :to="'/profile/' + nickName" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" data-test-id="link-to-my-profile">
             <fa icon="user"/>
             <span class="hidden md:inline">Me</span>
-          </a>
+          </router-link>
         </div>
         <div class="hidden md:block">
-          <a href="/">
+          <router-link to="/feed">
             <img class="h-8 w-8" src="../static/icon.svg" alt="Workflow">
-          </a>
+          </router-link>
         </div>
         <div class="flex items-baseline space-x-4">
           <div ref="search_container" class="flex">
@@ -43,8 +43,8 @@
               <fa icon="search"/>
             </label>
             <input
-              id="search" 
               v-model="searchValue"
+              data-test-id="search" 
               class="hidden md:block rounded-r bg-gray-200 appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
               type="text" 
               placeholder="search twitter"
@@ -52,31 +52,31 @@
             >
           </div>
           <div class="md:hidden block relative">
-            <a class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" @click="expandMenu = !expandMenu">
+            <button class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" @click="expandMenu = !expandMenu">
               <fa icon="ellipsis-h"/>
-            </a>
+            </button>
             <div v-if="expandMenu" class="absolute flex flex-col bg-white min-w-2 min-h-16 border border-gray-300 rounded-lg">
-              <a href="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
+              <router-link to="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
                 <fa icon="comments"/>
-              </a>
-              <a href="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
+              </router-link>
+              <router-link to="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
                 <fa icon="cog"/>
-              </a>
-              <a href="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
+              </router-link>
+              <router-link to="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
                 <fa icon="pen"/>
-              </a>
+              </router-link>
             </div>
           </div>
           <div class="md:block hidden">
-            <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+            <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
               <fa icon="comments"/>
-            </a>
-            <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+            </router-link>
+            <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
               <fa icon="cog"/>
-            </a>
-            <a href="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
+            </router-link>
+            <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
               <fa icon="pen"/>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
@@ -86,8 +86,8 @@
             <fa icon="search"/>
           </label>
           <input
-            id="search"
             v-model="searchValue"
+            data-test-id="search"
             class="rounded-r bg-gray-200 appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
             type="text" 
             placeholder="search twitter"

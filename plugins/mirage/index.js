@@ -1,4 +1,5 @@
-import { belongsTo, createServer, Model } from 'miragejs'
+import { belongsTo, createServer, Model } from 'miragejs';
+import jwt from 'jsonwebtoken';
 if (process.env.NODE_ENV === 'development') {
   createServer({
     models: {
@@ -97,8 +98,10 @@ if (process.env.NODE_ENV === 'development') {
       server.create("trend", { description: "eleições 2022" })
     },
     routes() {
-      this.get("/auth/user-authenticated", (schema) => {
-          return schema.users.first()
+      this.get("/auth/signin", (schema) => {
+          const user = schema.users.first().attrs
+          console.log("user in mirage=====>", user)
+          return jwt.sign(user, '123456', { expiresIn: '1h' })
         }
       )
       this.get("/users/:searchName", (schema, request) => {

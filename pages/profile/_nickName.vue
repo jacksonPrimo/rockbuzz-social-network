@@ -51,7 +51,7 @@
           <span v-else class="ml-2 text-gray-400 text-sm">
             {{user.fullName}} retweetou <fa icon="retweet"/>
           </span>
-          <Tweet :tweet="tweet" :user-auth-id="userAuthId"/>
+          <Tweet :tweet="tweet" :user-auth-id="userAuthenticated.id"/>
         </div>
       </div>
       <div v-if="content == 'favorites'">
@@ -126,7 +126,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@/services/axios.service'
+import { mapGetters } from 'vuex';
 export default Vue.extend({
   layout: 'simple',
   data: ()=>({
@@ -140,39 +140,38 @@ export default Vue.extend({
       followers: []
     },
     userNotFound: true,
-    userAuthId: '',
     content: 'tweets',
     tweets: [],
     favorites: []
   }),
   computed:{
     isUserAuthenticated(){
-      if(this.user.id === this.userAuthId) return true
+      if(this.user.id === this.userAuthenticated.id) return true
       else return false
-    }
+    },
+    ...mapGetters({
+      userAuthenticated: 'auth/userAuthenticated'
+    })
   },
   mounted(){
     const { nickName } = this.$route.params;
     if(!nickName) this.$router.push('/feed')
-    axios.get(`/profile/${nickName}`)
+    this.$axios.$get(`/profile/${nickName}`)
       .then(resp=>{
-        this.user = resp.data.user
+        this.user = resp.user
         this.userNotFound = false
       })
       .catch(() => {
         this.userNotFound = true
       })
-    axios.get('/tweets').then(resp => {
-        this.tweets = resp.data
-    })
-    axios.get('/auth/user-authenticated').then(resp => {
-      this.userAuthId = resp.data.user.id
+    this.$axios.$get('/tweets').then(resp => {
+        this.tweets = resp
     })
   },
   methods: {
     getFavorites(){
-      axios.get(`/tweets/favorites/${this.userAuthId}`).then(resp => {
-        this.favorites = resp.data
+      this.$axios.$get(`/tweets/favorites/${this.userAuthenticated.id}`).then(resp => {
+        this.favorites = resp
       })
     }
   }

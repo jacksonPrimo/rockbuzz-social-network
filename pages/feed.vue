@@ -4,25 +4,27 @@
       <h1 class="text-3xl text-gray-500">Tweets</h1>
     </div>
     <div>
-      <Tweet v-for="(tweet, index) of tweets" :key="index" :tweet="tweet" :user-auth-id="userAuthId"/>
+      <Tweet v-for="(tweet, index) of tweets" :key="index" :tweet="tweet" :user-auth-id="userAuthenticated.id"/>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@/services/axios.service'
+import { mapGetters } from 'vuex'
 export default Vue.extend({
-  layout: 'default',
+  layout: 'complete',
   data: ()=> ({
     tweets: [],
-    userAuthId: ''
   }),
-  mounted(){
-    axios.get('/tweets').then(resp => {
-      this.tweets = resp.data
+  computed: {
+    ...mapGetters({
+      userAuthenticated: 'auth/userAuthenticated',
+      authenticated: 'auth/authenticated',
     })
-    axios.get('/auth/user-authenticated').then(resp => {
-      this.userAuthId = resp.data.user.id
+  },
+  mounted(){
+    this.$axios.$get('/tweets').then(resp => {
+      this.tweets = resp
     })
   },
 })

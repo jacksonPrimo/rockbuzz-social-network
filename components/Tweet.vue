@@ -48,7 +48,6 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@/services/axios.service'
 export default Vue.extend({
   props: {
     tweet: {
@@ -88,7 +87,7 @@ export default Vue.extend({
           userId: this.userAuthId,
           tweetId: this.tweet.id 
         }
-        await axios.post(`/tweets/favorites/`, favorite)
+        await this.$axios.$post(`/tweets/favorites/`, favorite)
       } catch(error){
         console.log(error)
       }

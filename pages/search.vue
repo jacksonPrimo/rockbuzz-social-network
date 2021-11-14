@@ -32,31 +32,34 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import axios from '@/services/axios.service'
+import { mapGetters } from 'vuex'
 export default Vue.extend({
-  layout: 'default',
+  layout: 'complete',
   data: ()=>({
-    searchResults: [] 
+    searchResults: []
   }),
   computed: {
     description(){
       return this.$route.query.description
-    }
+    },
+    ...mapGetters({
+      authenticated: 'auth/authenticated'
+    }),
   },
   watch: {
     description() {
-      this.search()
+      (this as any).search()
     }
   },
   mounted(){
-    this.search()
+    (this as any).search()
   },
   methods: {
     search(){
-      axios
-      .get(`/users/${this.description}`)
-      .then((resp:any) => {
-        this.searchResults = resp.data
+      this.$axios
+      .$get(`/users/${this.description}`)
+      .then((resp: any) => {
+        this.searchResults = resp
       })
     }
   }

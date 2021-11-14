@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen relative">
+  <div v-if="userAuthenticated" class="w-full h-screen relative">
     <Header :nick-name="userAuthenticated.nickName"/>
     <div class="min-h-screen px-4 sm:px-6 lg:px-12 bg-gray-200 pt-16">
       <div class="flex flex-col align-center justify-center md:flex-row justify-between py-2">
@@ -46,36 +46,35 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Header from '@/components/Header.vue'
-import axios from '@/services/axios.service'
 export default Vue.extend({
   components: { Header },
   data: ()=> ({
-    userAuthenticated: {
-      id: '',
-      profileImage: '',
-      nickName: '',
-      fullName: '',
-      tweets: '',
-      following: '',
-      followers: '' 
-    },
     trends: [],
     sugestionsToFollow: []
   }),
-  mounted(){
-    axios.get('/auth/user-authenticated').then(resp => {
-      this.userAuthenticated = resp.data.user
-      this.getSugestionToFollow(this.userAuthenticated.id)
+    computed: {
+  ...mapGetters({
+      userAuthenticated: 'auth/userAuthenticated',
+      authenticated: 'auth/authenticated'
     })
-    axios.get('/trends').then(resp => {
-      this.trends = resp.data
+  },
+  beforeMount(){
+    if(!this.authenticated){
+      this.$router.push({path: '/'})
+    }
+  },
+  mounted(){
+    this.getSugestionToFollow(this.userAuthenticated.id)
+    this.$axios.$get('/trends').then(resp => {
+      this.trends = resp
     })
   },
   methods: {
     getSugestionToFollow(userId: string){
-      axios.get(`/sugestion-to-follow/${userId}`).then(resp => {
-        this.sugestionsToFollow = resp.data
+      this.$axios.$get(`/sugestion-to-follow/${userId}`).then(resp => {
+        this.sugestionsToFollow = resp
       })
     }
   }

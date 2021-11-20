@@ -66,15 +66,18 @@ export default Vue.extend({
     }
   },
   mounted(){
-    this.getSugestionToFollow(this.userAuthenticated.id)
-    this.$axios.$get('/trends').then(resp => {
-      this.trends = resp
-    })
+    this.getSugestionToFollow()
+    this.getTrends()
   },
   methods: {
-    getSugestionToFollow(userId: string){
-      this.$axios.$get(`/sugestion-to-follow/${userId}`).then(resp => {
+    getSugestionToFollow(){
+      this.$axios.$get(`/sugestion-to-follow/${this.userAuthenticated.id}`).then(resp => {
         this.sugestionsToFollow = resp
+      })
+    },
+    getTrends(){
+      this.$axios.$get('/trends').then(resp => {
+        this.trends = resp
       })
     }
   }

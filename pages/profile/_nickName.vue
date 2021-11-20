@@ -156,7 +156,13 @@ export default Vue.extend({
   mounted(){
     const { nickName } = this.$route.params;
     if(!nickName) this.$router.push('/feed')
-    this.$axios.$get(`/profile/${nickName}`)
+    this.getProfile(nickName)
+    this.getFavorites()
+    this.getTweets()
+  },
+  methods: {
+    getProfile(nickName: string){
+      this.$axios.$get(`/profile/${nickName}`)
       .then(resp=>{
         this.user = resp.user
         this.userNotFound = false
@@ -164,14 +170,15 @@ export default Vue.extend({
       .catch(() => {
         this.userNotFound = true
       })
-    this.$axios.$get('/tweets').then(resp => {
-        this.tweets = resp
-    })
-  },
-  methods: {
+    },
     getFavorites(){
       this.$axios.$get(`/tweets/favorites/${this.userAuthenticated.id}`).then(resp => {
         this.favorites = resp
+      })
+    },
+    getTweets(){
+      this.$axios.$get('/tweets').then(resp => {
+        this.tweets = resp
       })
     }
   }

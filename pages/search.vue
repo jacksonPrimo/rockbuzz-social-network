@@ -32,7 +32,6 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 export default Vue.extend({
   layout: 'complete',
   data: ()=>({
@@ -42,9 +41,6 @@ export default Vue.extend({
     description(){
       return this.$route.query.description
     },
-    ...mapGetters({
-      authenticated: 'auth/authenticated'
-    }),
   },
   watch: {
     description() {

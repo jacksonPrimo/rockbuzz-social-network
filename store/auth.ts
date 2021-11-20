@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken';
 export const state = () => ({
   token: null,
 })
@@ -21,9 +21,11 @@ export const actions = {
 }
 export const mutations = {
   signIn(state: any, token: string) {
+    localStorage.setItem('token', token);
     state.token = token
   },
   signOut(state: any) {
     state.token = null
+    localStorage.removeItem('token');
   },
 }

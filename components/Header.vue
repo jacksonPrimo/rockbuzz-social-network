@@ -20,7 +20,7 @@
             <fa icon="hashtag"/>
             <span class="hidden md:inline">Discover</span>
           </router-link>
-          <router-link :to="'/profile/' + nickName" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" data-test-id="link-to-my-profile">
+          <router-link :to="'/profile/' + nickName" class="text-gray-400 hover:text-green-400 hoverover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" data-test-id="link-to-my-profile">
             <fa icon="user"/>
             <span class="hidden md:inline">Me</span>
           </router-link>
@@ -62,9 +62,9 @@
               <router-link to="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
                 <fa icon="cog"/>
               </router-link>
-              <router-link to="/" class="text-gray-400 px-3 py-2 text-sm font-medium">
-                <fa icon="pen"/>
-              </router-link>
+              <button class="text-gray-400 hover:text-red-400 px-3 py-2 text-sm font-medium" @click="logout">
+                <fa icon="sign-out-alt"/>
+              </button>
             </div>
           </div>
           <div class="md:block hidden">
@@ -74,9 +74,9 @@
             <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
               <fa icon="cog"/>
             </router-link>
-            <router-link to="/" class="text-gray-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium">
-              <fa icon="pen"/>
-            </router-link>
+            <button class="text-gray-400 hover:text-red-400 hover:bg-gray-200 px-3 py-2 rounded-md text-sm font-medium" @click="logout">
+              <fa icon="sign-out-alt"/>
+            </button>
           </div>
         </div>
       </div>
@@ -116,6 +116,10 @@ export default Vue.extend({
     searchValue: '',
   }),
   methods: {
+    logout(){
+      this.$store.dispatch('auth/signOut')
+      this.$router.push({path: '/'})
+    },
     search(){
       this.$router.push({ name: 'search', query: {description: this.searchValue } })
     }
